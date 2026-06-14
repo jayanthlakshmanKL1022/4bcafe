@@ -2,8 +2,28 @@ import { useState, useEffect, useRef } from "react";
  
 /* ─── DATA ────────────────────────────────────────────── */
 const NAV_LINKS = ["Menu", "About", "Gallery", "Contact"];
+
+type GalleryItem = {
+  url: string;
+  label: string;
+  tag: string;
+  span: string;
+};
+
+type MenuCategory = {
+  id: string;
+  label: string;
+  icon: string;
+  items: MenuItem[];
+};
  
-const MENU_CATEGORIES = [
+type MenuItem = {
+  name: string;
+  desc: string;
+  price: number;
+};
+
+const MENU_CATEGORIES: MenuCategory[] = [
   {
     id: "coffee", label: "Coffee", icon: "☕",
     items: [
@@ -460,8 +480,8 @@ body{background:#0b1a0d;}
 `;
  
 /* ─── HELPERS ─────────────────────────────────────────── */
-function useCountUp(target:any, delay = 2800) {
-  const [val, setVal] = useState(0);
+function useCountUp(target:number, delay = 2800) {
+  const [val, setVal] = useState<number>(0);
   useEffect(() => {
     const t = setTimeout(() => {
       let cur = 0;
@@ -517,7 +537,7 @@ function LeafParticles() {
   );
 }
  
-function StatBadge({ icon, num, suffix, label, delay }:any) {
+function StatBadge({ icon, num, suffix, label, delay }: { icon: string, num: number, suffix: string, label: string, delay: number }) {
   const val = useCountUp(num, delay);
   return (
     <div className="fb-stat">
@@ -556,13 +576,16 @@ function Navbar() {
   );
 }
  
-function HeroSection({ onMenuClick }:any) {
-  const bgRef = useRef(null);
+function HeroSection({ onMenuClick }: { onMenuClick: () => void }) {
+  const bgRef = useRef<HTMLImageElement | null>(null);
   useEffect(() => {
     const img = bgRef.current;
     if (!img) return;
-    if (img.complete) img.classList.add("loaded") as any;
-    else img.onload = () => img.classList.add("loaded") as any;
+    if (img.complete) {
+      img.classList.add("loaded");
+    } else {
+      img.onload = () => img.classList.add("loaded");
+    }
   }, []);
  
   return (
@@ -720,7 +743,7 @@ function AboutSection() {
  
 function GallerySection() {
   const [filter, setFilter] = useState("All");
-  const [lightbox, setLightbox] = useState(null);
+  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
   const filters = ["All", "Coffee", "Tea", "Snacks", "Mains", "Sweets", "Vibes"];
  
   const visible = filter === "All"
@@ -748,7 +771,7 @@ function GallerySection() {
           <div
             key={item.url + i}
             className={`fb-gallery-item${item.span === "wide" ? " span-wide" : item.span === "tall" ? " span-tall" : ""}`}
-            onClick={() => setLightbox(item as any)}
+            onClick={() => setLightbox(item)}
           >
             <img src={item.url} alt={item.label} loading="lazy" />
             <div className="fb-gallery-overlay">
@@ -765,7 +788,10 @@ function GallerySection() {
  
       {lightbox && (
         <div className="fb-lightbox" onClick={() => setLightbox(null)}>
-          <img className="fb-lightbox-img" src={lightbox.url.replace("w=600", "w=1200")} alt={lightbox.label} onClick={(e:any) => e.stopPropagation()} />
+          <img className="fb-lightbox-img" src={lightbox.url.replace("w=600", "w=1200")} alt={lightbox.label}
+          onClick={(e: React.MouseEvent<HTMLImageElement>) =>
+            e.stopPropagation()
+          }/>
           <button className="fb-lightbox-close" onClick={() => setLightbox(null)}>✕</button>
           <div className="fb-lightbox-caption">
             <div className="fb-lightbox-caption-tag">{lightbox.tag}</div>
@@ -781,7 +807,7 @@ function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", date: "", guests: "", note: "" });
  
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
   };
@@ -852,7 +878,7 @@ function ContactSection() {
             <iframe
               title="4B Cafe Coimbatore"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.265!2d76.9994!3d11.0168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859af2f971cb5%3A0x2fc1c81e183a30a2!2sPeelamedu%2C%20Coimbatore%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-              allowFullScreen=""
+              allowFullScreen={true}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -891,7 +917,7 @@ function ContactSection() {
                   </select>
                 </div>
                 <div className="fb-form-row">
-                  <textarea className="fb-form-input fb-form-full" rows="2"
+                  <textarea className="fb-form-input fb-form-full" rows={2}
                     placeholder="Special requests (optional)"
                     value={form.note} onChange={e => setForm({ ...form, note: e.target.value })}
                     style={{ resize: "none", gridColumn: "span 2" }} />
@@ -907,7 +933,7 @@ function ContactSection() {
 }
  
 function Footer() {
-  const scrollTo = (id:any) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id:string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
     <footer className="fb-footer">
       <div className="fb-footer-top">
