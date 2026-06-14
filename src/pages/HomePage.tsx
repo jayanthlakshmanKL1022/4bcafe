@@ -19,6 +19,7 @@ type MenuCategory = {
  
 type MenuItem = {
   name: string;
+  
   desc: string;
   price: number;
 };
