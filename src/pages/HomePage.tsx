@@ -460,7 +460,7 @@ body{background:#0b1a0d;}
 `;
  
 /* ─── HELPERS ─────────────────────────────────────────── */
-function useCountUp(target, delay = 2800) {
+function useCountUp(target:any, delay = 2800) {
   const [val, setVal] = useState(0);
   useEffect(() => {
     const t = setTimeout(() => {
@@ -517,7 +517,7 @@ function LeafParticles() {
   );
 }
  
-function StatBadge({ icon, num, suffix, label, delay }) {
+function StatBadge({ icon, num, suffix, label, delay }:any) {
   const val = useCountUp(num, delay);
   return (
     <div className="fb-stat">
@@ -531,7 +531,7 @@ function StatBadge({ icon, num, suffix, label, delay }) {
 }
  
 function Navbar() {
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id:any) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
     <nav className="fb-nav">
       <div className="fb-logo" onClick={() => scrollTo("home")}>
@@ -556,13 +556,13 @@ function Navbar() {
   );
 }
  
-function HeroSection({ onMenuClick }) {
+function HeroSection({ onMenuClick }:any) {
   const bgRef = useRef(null);
   useEffect(() => {
     const img = bgRef.current;
     if (!img) return;
-    if (img.complete) img.classList.add("loaded");
-    else img.onload = () => img.classList.add("loaded");
+    if (img.complete) img.classList.add("loaded") as any;
+    else img.onload = () => img.classList.add("loaded") as any;
   }, []);
  
   return (
@@ -748,7 +748,7 @@ function GallerySection() {
           <div
             key={item.url + i}
             className={`fb-gallery-item${item.span === "wide" ? " span-wide" : item.span === "tall" ? " span-tall" : ""}`}
-            onClick={() => setLightbox(item)}
+            onClick={() => setLightbox(item as any)}
           >
             <img src={item.url} alt={item.label} loading="lazy" />
             <div className="fb-gallery-overlay">
@@ -765,7 +765,7 @@ function GallerySection() {
  
       {lightbox && (
         <div className="fb-lightbox" onClick={() => setLightbox(null)}>
-          <img className="fb-lightbox-img" src={lightbox.url.replace("w=600", "w=1200")} alt={lightbox.label} onClick={e => e.stopPropagation()} />
+          <img className="fb-lightbox-img" src={lightbox.url.replace("w=600", "w=1200")} alt={lightbox.label} onClick={(e:any) => e.stopPropagation()} />
           <button className="fb-lightbox-close" onClick={() => setLightbox(null)}>✕</button>
           <div className="fb-lightbox-caption">
             <div className="fb-lightbox-caption-tag">{lightbox.tag}</div>
@@ -907,7 +907,7 @@ function ContactSection() {
 }
  
 function Footer() {
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id:any) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
     <footer className="fb-footer">
       <div className="fb-footer-top">
