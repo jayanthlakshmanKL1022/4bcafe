@@ -659,7 +659,7 @@ function MenuSection() {
         ))}
       </div>
       <div className="fb-menu-grid">
-        {cat.items.map(item => (
+        {cat?.items?.map(item => (
           <div className="fb-menu-card" key={item.name}>
             <div className="fb-mc-left">
               <div className="fb-mc-name">{item.name}</div>
